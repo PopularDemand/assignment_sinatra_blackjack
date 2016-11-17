@@ -18,7 +18,11 @@ class Deck
   end
 
   def new_deck
-    (1..13).to_a.product(['♠','♥','♣','♦'])
+    [10,'s','K'] 
+    values = (2..10).to_a + ['J','Q','K', 'A']
+    (1..10).to_a.product(['♠','♥','♣','♦'])
   end
+
+  # Card class to handle getting value or to_i
 
 end

@@ -37,6 +37,7 @@ end
 
 get '/blackjack/bet' do
   # clear out session variables 
+  @bankroll = session[:bankroll] || 1000
   session[:players_hand] = nil 
   session[:dealers_hand] = nil 
   session[:deck] = nil 
@@ -59,7 +60,8 @@ get '/blackjack/hit' do
   players_hand << deck.draw
   session[:players_hand] = players_hand.to_json
   session[:deck] = deck.cards.to_json
-  if total(players_hand) >= 21
+  if total(players_hand) > 21
+    session[:busted] = true
     redirect '/blackjack/stay'
   else
     redirect '/blackjack' 
@@ -69,16 +71,27 @@ end
 get '/blackjack/stay' do 
   deck = Deck.new(JSON.parse(session[:deck]))
   dealers_hand = JSON.parse(session[:dealers_hand])
-  until total(dealers_hand) > 16
-    dealers_hand << deck.draw
+  unless session[:busted]
+    until total(dealers_hand) > 16
+      dealers_hand << deck.draw
+    end
   end
   session[:dealers_hand] = dealers_hand.to_json
   redirect '/blackjack/results'
 end
 
 get '/blackjack/results' do 
-  # display results 
-  # .... 
-  redirect '/blackjack'
+  @players_hand = JSON.parse(session[:players_hand])
+  @dealers_hand = JSON.parse(session[:dealers_hand])
+  if session[:busted]
+    @winner = "dealer"
+  elsif total(@dealers_hand) > 21
+    @winner = "player"
+  else
+    @winner = total(@players_hand) > total(@dealers_hand) ? "player" : "dealer"
+  end
+  @bet = session[:bet]
+  @bankroll = session[:bankroll]
+  erb :results
 end
 

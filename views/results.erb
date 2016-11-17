@@ -1,0 +1,14 @@
+<h1>Results:</h1>
+
+<%= erb :"shared/_hands" %>
+
+<h3>The winner is <%= @winner %></h3>
+<% if @winner == 'player' %>
+  You win $<%= @bet %>.
+<% end %>
+You currently have $<%= @bankroll %>.
+
+Continue Playing?
+  <a href="/blackjack/bet">
+    <input type="button" value="Play Again!">
+  </a>
