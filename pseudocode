@@ -1,19 +1,32 @@
-# Player 
-  # Hand (cards) 
+# Player
+  # Hand
+  # Hand value
+# Human < Player
+  # Hand (cards) [array of ints]
+  # Hand value
   # Bet (player)
   # Bankroll (player)
-# Dealer 
-  # 
+  # Hit
+    - Add card to hand
+  # Stay
+  # Doubling (optional)
+  # Splitting (optional)
+# Dealer < Player
+  # Hit
+  # Stay
 # Card 
   # Rank attribute
   # Suit attribute
+  # .to_i
   # Options hash - custom values
-  # Ace method
-# Deck 
-  # 
-# Game 
-  # Hit - draw card & add to hand 
-  # Stay 
-  # Doubling (optional)
-  # Splitting (optional)
-  # 
+# Deck
+  # shuffle
+  # draw(number)
+# Game
+  # Dealer and player hands
+  # Deck
+
+Game flow - 
+ - Player gets two cards and option
+  - If hit
+    - POST hit, add card to hand, compute result, redirect to main
