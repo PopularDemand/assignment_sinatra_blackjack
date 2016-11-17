@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'pry-byebug'
@@ -35,6 +36,10 @@ get '/blackjack' do
 end
 
 get '/blackjack/bet' do
+  # clear out session variables 
+  session[:players_hand] = nil 
+  session[:dealers_hand] = nil 
+  session[:deck] = nil 
   erb :bet
 end
 
@@ -48,27 +53,32 @@ post '/blackjack/bet' do
 end
 
 get '/blackjack/hit' do 
-  # instantiate game
+  deck = Deck.new(JSON.parse(session[:deck]))
   players_hand = JSON.parse(session[:players_hand])
   dealers_hand = JSON.parse(session[:dealers_hand])
-  # draw from deck 
-  players_hand << [5, 'C'] # deck.draw
+  players_hand << deck.draw
   session[:players_hand] = players_hand.to_json
-  # add drawn cardto player's hand 
-  # break down & store 
-  redirect '/blackjack'
+  session[:deck] = deck.cards.to_json
+  if total(players_hand) >= 21
+    redirect '/blackjack/stay'
+  else
+    redirect '/blackjack' 
+  end
 end
 
 get '/blackjack/stay' do 
+  deck = Deck.new(JSON.parse(session[:deck]))
   dealers_hand = JSON.parse(session[:dealers_hand])
   until total(dealers_hand) > 16
-    dealers_hand << [1, '◆'] # deck.draw
+    dealers_hand << deck.draw
   end
   session[:dealers_hand] = dealers_hand.to_json
   redirect '/blackjack/results'
 end
 
 get '/blackjack/results' do 
+  # display results 
+  # .... 
   redirect '/blackjack'
 end
 

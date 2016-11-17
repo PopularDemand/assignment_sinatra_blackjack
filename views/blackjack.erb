@@ -1,7 +1,4 @@
-<h1>Your Hand</h1>
-  <% @players_hand.each do |card| %>
-    <%= card %>
-  <% end %>
+<%= erb :"shared/_hands" %>
 
 <form action="/blackjack" method="post">
   <a href="/blackjack/hit">
@@ -11,8 +8,3 @@
     <input type="button" name="stay" value="Stay">
   </a>
 </form>
-
-<h1>Dealer's Hand</h1>
-  <% @dealers_hand.each do |card| %>
-    <%= card %>
-  <% end %>
