@@ -5,6 +5,8 @@ require 'pry-byebug'
 require 'erb'
 require 'json'
 
+require './lib/deck'
+
 enable :sessions
 
 helpers do 
@@ -22,12 +24,13 @@ get '/' do
 end
 
 get '/blackjack' do
-  # deck = Deck.new
-  @players_hand = session[:players_hand] ? JSON.parse(session[:players_hand]) : [[2, 'H'],[10, 'C']]
-  @dealers_hand = session[:dealers_hand] ? JSON.parse(session[:dealers_hand]) : [[7, 'S'],[4, '◆']] #deck.draw(2)
+  deck = Deck.new
+  @players_hand = session[:players_hand] ? JSON.parse(session[:players_hand]) : deck.draw(2)
+  @dealers_hand = session[:dealers_hand] ? JSON.parse(session[:dealers_hand]) : deck.draw(2)
 
   session[:players_hand] = @players_hand.to_json
   session[:dealers_hand] = @dealers_hand.to_json
+  session[:deck] = deck.cards.to_json
   erb :blackjack # uses @players_hand and @dealers_hand
 end
 
