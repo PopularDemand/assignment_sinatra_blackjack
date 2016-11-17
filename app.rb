@@ -7,6 +7,16 @@ require 'json'
 
 enable :sessions
 
+helpers do 
+
+  def total(hand) 
+    hand.inject(0) do |sum, card|
+      sum + card[0]
+    end
+  end
+
+end
+
 get '/' do 
   erb :index
 end
@@ -22,10 +32,6 @@ get '/blackjack' do
 end
 
 get '/blackjack/bet' do
-  # instantiate game
-  # show bankroll
-  # ask player for bet amount
-  # break down & store
   erb :bet
 end
 
@@ -51,14 +57,15 @@ get '/blackjack/hit' do
 end
 
 get '/blackjack/stay' do 
-  # instantiate game
-  # dealer does his turns
-  # break down & store
+  dealers_hand = JSON.parse(session[:dealers_hand])
+  until total(dealers_hand) > 16
+    dealers_hand << [1, '◆'] # deck.draw
+  end
+  session[:dealers_hand] = dealers_hand.to_json
   redirect '/blackjack/results'
 end
 
 get '/blackjack/results' do 
-  # displays results 
-  # ask to play again 
+  redirect '/blackjack'
 end
 
