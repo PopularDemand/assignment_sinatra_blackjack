@@ -1,0 +1,19 @@
+# Player 
+  # Hand (cards) 
+  # Bet (player)
+  # Bankroll (player)
+# Dealer 
+  # 
+# Card 
+  # Rank attribute
+  # Suit attribute
+  # Options hash - custom values
+  # Ace method
+# Deck 
+  # 
+# Game 
+  # Hit - draw card & add to hand 
+  # Stay 
+  # Doubling (optional)
+  # Splitting (optional)
+  # 
