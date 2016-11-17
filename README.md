@@ -1,3 +1,6 @@
+<b>Alexa Anderson</b><br>
+<b>Pramod Jacob</b><br>
+
 # assignment_blackjack
 Hit me baby one more time?
 
