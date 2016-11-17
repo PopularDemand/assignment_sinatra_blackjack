@@ -1,7 +1,16 @@
 <h1>Your Hand</h1>
+  <% @players_hand.each do |card| %>
+    <%= card %>
+  <% end %>
+
 <form action="/blackjack" method="post">
-  <input type="button" name="hit" value="Hit">
+  <a href="/blackjack/hit">
+    <input type="button" name="hit" value="Hit">
+  </a>
   <input type="button" name="stay" value="Stay">
 </form>
 
 <h1>Dealer's Hand</h1>
+  <% @dealers_hand.each do |card| %>
+    <%= card %>
+  <% end %>

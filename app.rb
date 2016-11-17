@@ -3,6 +3,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'pry-byebug'
 require 'erb'
+require 'json'
 
 enable :sessions
 
@@ -11,19 +12,21 @@ get '/' do
 end
 
 get '/blackjack' do
-  players_hand = session[:players_hand]
-  dealers_hand = session[:dealers_hand]
-  # cards removed from deck
-  # deck = Deck.new(players_hand, dealers_hand) 
-  erb :blackjack
+  # deck = Deck.new
+  @players_hand = session[:players_hand] ? JSON.parse(session[:players_hand]) : [[2, 'H'],[10, 'C']]
+  @dealers_hand = session[:dealers_hand] ? JSON.parse(session[:dealers_hand]) : [[7, 'S'],[4, '◆']] #deck.draw(2)
+
+  session[:players_hand] = @players_hand.to_json
+  session[:dealers_hand] = @dealers_hand.to_json
+  erb :blackjack # uses @players_hand and @dealers_hand
 end
 
 get '/blackjack/bet' do
-	# instantiate game
-	# show bankroll
-	# ask player for bet amount
-	# break down & store
-	erb :bet
+  # instantiate game
+  # show bankroll
+  # ask player for bet amount
+  # break down & store
+  erb :bet
 end
 
 post '/blackjack/bet' do
@@ -32,13 +35,16 @@ post '/blackjack/bet' do
   bankroll -= bet
   session[:bet] = bet
   session[:bankroll] = bankroll
-  binding.pry
-	redirect "/blackjack"
+  redirect "/blackjack"
 end
 
 get '/blackjack/hit' do 
   # instantiate game
+  players_hand = JSON.parse(session[:players_hand])
+  dealers_hand = JSON.parse(session[:dealers_hand])
   # draw from deck 
+  players_hand << [5, 'C'] # deck.draw
+  session[:players_hand] = players_hand.to_json
   # add drawn cardto player's hand 
   # break down & store 
   redirect '/blackjack'
