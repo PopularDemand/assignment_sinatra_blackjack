@@ -4,15 +4,17 @@ require 'sinatra/reloader'
 require 'pry-byebug'
 require 'erb'
 
+enable :sessions
+
 get '/' do 
   erb :index
 end
 
 get '/blackjack' do
-  # unless session[:game] reinstantiate game
-  	# instantiate player bankroll
-  # else deal for the player and dealer
-  # break down & store
+  players_hand = session[:players_hand]
+  dealers_hand = session[:dealers_hand]
+  # cards removed from deck
+  # deck = Deck.new(players_hand, dealers_hand) 
   erb :blackjack
 end
 
@@ -25,9 +27,12 @@ get '/blackjack/bet' do
 end
 
 post '/blackjack/bet' do
-	# instantiate game
-	# decrement the bankroll
-	# break down & store
+  bankroll = session[:bankroll] ? session[:bankroll] : 1000
+  bet = params[:bet].to_i
+  bankroll -= bet
+  session[:bet] = bet
+  session[:bankroll] = bankroll
+  binding.pry
 	redirect "/blackjack"
 end
 
