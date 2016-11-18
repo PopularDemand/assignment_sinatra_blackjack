@@ -7,14 +7,18 @@ require 'erb'
 require 'json'
 
 require './lib/deck'
+require './lib/card'
 
 enable :sessions
 
 helpers do 
 
   def total(hand) 
+    hand = hand.map do |card|
+      Card.new(card[0], card[1])
+    end
     hand.inject(0) do |sum, card|
-      sum + card[0]
+      sum + card.value
     end
   end
 
@@ -28,7 +32,6 @@ get '/blackjack' do
   deck = Deck.new
   @players_hand = session[:players_hand] ? JSON.parse(session[:players_hand]) : deck.draw(2)
   @dealers_hand = session[:dealers_hand] ? JSON.parse(session[:dealers_hand]) : deck.draw(2)
-
   session[:players_hand] = @players_hand.to_json
   session[:dealers_hand] = @dealers_hand.to_json
   session[:deck] = deck.cards.to_json
@@ -41,6 +44,7 @@ get '/blackjack/bet' do
   session[:players_hand] = nil 
   session[:dealers_hand] = nil 
   session[:deck] = nil 
+  session[:busted] = false
   erb :bet
 end
 
@@ -89,6 +93,9 @@ get '/blackjack/results' do
     @winner = "player"
   else
     @winner = total(@players_hand) > total(@dealers_hand) ? "player" : "dealer"
+  end
+  if @winner = "player" 
+    session[:bankroll] += session[:bet]
   end
   @bet = session[:bet]
   @bankroll = session[:bankroll]

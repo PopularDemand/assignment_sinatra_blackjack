@@ -1,4 +1,5 @@
 class Deck
+
   attr_accessor :cards
 
   def initialize(cards=nil)
@@ -18,11 +19,7 @@ class Deck
   end
 
   def new_deck
-    [10,'s','K'] 
-    values = (2..10).to_a + ['J','Q','K', 'A']
-    (1..10).to_a.product(['♠','♥','♣','♦'])
+    (2..14).to_a.product(['♠','♥','♣','♦'])
   end
-
-  # Card class to handle getting value or to_i
 
 end
