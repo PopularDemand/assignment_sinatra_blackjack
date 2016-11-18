@@ -24,15 +24,15 @@ class Card
 
   def render
     if @number > 1 && @number < 11 
-      @number
+      [@number, @suit]
     elsif @number == 11
-      'J'
+      ['J', @suit]
     elsif @number == 12
-      'Q'
+      ['Q', @suit]
     elsif @number == 13
-      'K'
+      ['K', @suit]
     else
-      'A'
+      ['A', @suit]
     end    
   end
 

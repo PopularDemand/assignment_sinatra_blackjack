@@ -1,9 +1,9 @@
 <h1>Dealer's Hand</h1>
   <% @dealers_hand.each do |card| %>
-    <%= card %>
+    <%= Card.new(card[0], card[1]).render %>
   <% end %>
 
 <h1>Your Hand</h1>
   <% @players_hand.each do |card| %>
-    <%= card %>
+    <%= Card.new(card[0], card[1]).render %>
   <% end %>
